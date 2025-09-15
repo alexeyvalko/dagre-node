@@ -1,8 +1,8 @@
 {
-  "name": "dagre",
+  "name": "dagre-node",
   "version": "0.9.0",
   "main": [
-    "dist/dagre.core.js"
+    "dist/dagre-node.core.js"
   ],
   "ignore": [
     ".*",
@@ -10,8 +10,8 @@
     "CHANGELOG.md",
     "Makefile",
     "browser.js",
-    "dist/dagre.js",
-    "dist/dagre.min.js",
+    "dist/dagre-node.js",
+    "dist/dagre-node.min.js",
     "index.js",
     "karma*",
     "lib/**",
