@@ -37,6 +37,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dagrejs/dagre.git"
+    "url": "https://github.com/alexeyvalko/dagre-node.git"
   }
 }
