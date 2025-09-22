@@ -1,6 +1,6 @@
 {
   "name": "dagre-node",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "Graph layout for JavaScript",
   "author": "Chris Pettitt <cpettitt@gmail.com>",
   "contributors": [
