@@ -1,4 +1,4 @@
-MOD = dagre
+MOD = dagre-node
 
 NPM = npm
 NYC = nyc
