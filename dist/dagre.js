@@ -467,7 +467,7 @@ function runLayout(g, time, opts) {
   g.nodes().forEach((v) => {
     if (!g.node(v)) g.setNode(v, {});
     if (typeof g.node(v).rank !== "number") {
-      g.node(v).rank = g.node(v)?.rank ?? Number.MIN_VALUE;
+      g.node(v).rank = Number.MIN_VALUE;
     }
   });
 
@@ -568,7 +568,6 @@ function buildLayoutGraph(inputGraph) {
     Object.assign(
       {},
       graphDefaults,
-      { points: [] },
       selectNumberAttrs(graph, graphNumAttrs),
       util.pick(graph, graphAttrs)
     )
@@ -593,6 +592,7 @@ function buildLayoutGraph(inputGraph) {
       e,
       Object.assign(
         {},
+        { points: [] },
         edgeDefaults,
         selectNumberAttrs(edge, edgeNumAttrs),
         util.pick(edge, edgeAttrs)
