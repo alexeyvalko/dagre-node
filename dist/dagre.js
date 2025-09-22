@@ -3127,7 +3127,7 @@ function zipObject(props, values) {
 }
 
 },{"@dagrejs/graphlib":29}],28:[function(require,module,exports){
-module.exports = "1.1.16";
+module.exports = "1.1.17";
 
 },{}],29:[function(require,module,exports){
 /**
