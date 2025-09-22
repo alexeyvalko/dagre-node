@@ -6,7 +6,7 @@
 //                 Graham Lea <https://github.com/GrahamLea>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-declare module '@dagrejs/dagre' {
+declare module 'dagre-node' {
   export namespace graphlib {
     class Graph<T = {}> {
       constructor(opt?: { directed?: boolean | undefined; multigraph?: boolean | undefined; compound?: boolean | undefined });
