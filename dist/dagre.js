@@ -200,7 +200,7 @@ function swapXY(g) {
 
   g.edges().forEach((e) => {
     let edge = g.edge(e);
-    if (edge.points) {
+    if (edge?.points?.length) {
       edge.points.forEach(swapXYOne);
     }
 
@@ -465,8 +465,11 @@ function layout(g, opts) {
 
 function runLayout(g, time, opts) {
   g.nodes().forEach((v) => {
-    if (!g.node(v)) g.setNode(v, {});
-    if (typeof g.node(v).rank !== "number") {
+    const node = g.node(v);
+    if (!node) {
+      g.setNode(v, { rank: Number.MIN_VALUE, width: 0, height: 0 });
+    }
+    if (typeof node.rank !== "number") {
       g.node(v).rank = Number.MIN_VALUE;
     }
   });
@@ -592,7 +595,6 @@ function buildLayoutGraph(inputGraph) {
       e,
       Object.assign(
         {},
-        { points: [] },
         edgeDefaults,
         selectNumberAttrs(edge, edgeNumAttrs),
         util.pick(edge, edgeAttrs)
@@ -730,8 +732,13 @@ function assignNodeIntersects(g) {
     let edge = g.edge(e);
     let nodeV = g.node(e.v);
     let nodeW = g.node(e.w);
+
+    if(!nodeV || !nodeW) {
+      return;
+    }
+    
     let p1, p2;
-    if (!edge.points) {
+    if (!edge.points?.length) {
       edge.points = [];
       p1 = nodeW;
       p2 = nodeV;
@@ -739,8 +746,17 @@ function assignNodeIntersects(g) {
       p1 = edge.points[0];
       p2 = edge.points[edge.points.length - 1];
     }
-    edge.points.unshift(util.intersectRect(nodeV, p1));
-    edge.points.push(util.intersectRect(nodeW, p2));
+
+    const isValid =
+      !Number.isNaN(p1?.x) &&
+      !Number.isNaN(p1?.y) &&
+      !Number.isNaN(p2?.x) &&
+      !Number.isNaN(p2?.y);
+
+    if (p1 && p2 && isValid) {
+      edge.points.unshift(util.intersectRect(nodeV, p1));
+      edge.points.push(util.intersectRect(nodeW, p2));
+    }
   });
 }
 
@@ -2258,14 +2274,26 @@ function position(g) {
   g = util.asNonCompoundGraph(g);
 
   positionY(g);
-  Object.entries(positionX(g)).forEach(([v, x]) => g.node(v).x = x);
+  Object.entries(positionX(g)).forEach(([v, x]) => (g.node(v).x = x));
+
+  g.nodes().forEach((v) => {
+    const node = g.node(v);
+    if (!node) {
+      g.setNode(v, { rank: Number.MIN_VALUE, width: 0, height: 0 });
+    }
+
+    if (node && (isNaN(node.x) || isNaN(node.y))) {
+      node.x =  0;
+      node.y =  0;
+    }
+  });
 }
 
 function positionY(g) {
   let layering = util.buildLayerMatrix(g);
   let rankSep = g.graph().ranksep;
   let prevY = 0;
-  layering.forEach(layer => {
+  layering.forEach((layer) => {
     const maxHeight = layer.reduce((acc, v) => {
       const height = g.node(v).height;
       if (acc > height) {
@@ -2274,11 +2302,10 @@ function positionY(g) {
         return height;
       }
     }, 0);
-    layer.forEach(v => g.node(v).y = prevY + maxHeight / 2);
+    layer.forEach((v) => (g.node(v).y = prevY + maxHeight / 2));
     prevY += maxHeight + rankSep;
   });
 }
-
 
 },{"../util":27,"./bk":21}],23:[function(require,module,exports){
 "use strict";
